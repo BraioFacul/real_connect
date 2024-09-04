@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "254593401446",
+    "firebase_url": "https://realconnect-8eb18-default-rtdb.firebaseio.com",
+    "project_id": "realconnect-8eb18",
+    "storage_bucket": "realconnect-8eb18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254593401446:android:33490746d7e05b45fd23a7",
+        "android_client_info": {
+          "package_name": "com.example.app.real_connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254593401446-0q0i758c3saimgth1fgifaco0kmob3v1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7PHIEH6-voL10akmE30ri98CrMozergA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254593401446-0q0i758c3saimgth1fgifaco0kmob3v1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.realConnect"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254593401446:android:ba70be386bf1d2b9fd23a7",
+        "android_client_info": {
+          "package_name": "com.example.real_connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254593401446-0q0i758c3saimgth1fgifaco0kmob3v1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7PHIEH6-voL10akmE30ri98CrMozergA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254593401446-0q0i758c3saimgth1fgifaco0kmob3v1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.realConnect"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
