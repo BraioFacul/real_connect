@@ -9,7 +9,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    home: LoginPage(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,4 +31,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

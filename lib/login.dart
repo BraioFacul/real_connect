@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_connect/Home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -69,13 +70,19 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 24),
                               ))),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()), 
+                            );
+                          },
                           style: ButtonStyle(
                               shape: WidgetStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      )),
+                                borderRadius: BorderRadius.circular(5.0),
+                              )),
                               backgroundColor:
                                   WidgetStateProperty.all(Colors.blue)),
                         )
