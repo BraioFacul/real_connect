@@ -9,24 +9,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _passwordVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
+      body: Container(
           color: Colors.blue,
           child: Column(children: [
             Container(
-              height: 300,
+              height: 250,
               width: 400,
-              child: Image(
-                  image: NetworkImage(
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCT5fsVW3aLFQGktcfHOIlES0OTiaiGhMTBA&s")),
+              child: Image.asset("assets/images/centro-universistario.png"),
             ),
             Padding(
-                padding: EdgeInsets.all(3),
+                padding: EdgeInsets.symmetric(horizontal: 25),
                 child: Container(
-                    height: 600,
+                    height: 640,
                     width: 500,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -35,14 +34,25 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         SizedBox(height: 100),
+                        Text('Enter in your account', style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'AnekMalayalam',
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),),
+                        SizedBox(height: 100),
                         Container(
                           width: 400,
-                          child: TextField(
+                          child: TextFormField(
                             onChanged: (value) {
                               setState(() {});
                             },
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.email),
+                              fillColor:
+                                  const Color.fromARGB(255, 218, 218, 218),
+                              filled: true,
+                              border: null,
                               labelText: 'Email',
                             ),
                           ),
@@ -50,12 +60,31 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 10),
                         Container(
                           width: 400,
-                          child: TextField(
+                          child: TextFormField(
                             onChanged: (value) {
                               setState(() {});
                             },
+                            obscureText: _passwordVisible,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              labelStyle: null,
+                              disabledBorder: null,
+                              enabledBorder: null,
+                              focusedBorder: null,
+                              fillColor:
+                                  const Color.fromARGB(255, 218, 218, 218),
+                              filled: true,
+                              border: null,
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(_passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                              ),
                               labelText: 'Password',
                             ),
                           ),
@@ -74,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()), 
+                                  builder: (context) => HomePage()),
                             );
                           },
                           style: ButtonStyle(
@@ -89,6 +118,6 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ))),
           ])),
-    ));
+    );
   }
 }
