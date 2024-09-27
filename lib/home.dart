@@ -1,4 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'components/app_background.dart';
+
+// variaveis
+var boxShadow = BoxShadow(
+  color: Colors.black.withOpacity(0.24),
+  spreadRadius: 0,
+  blurRadius: 8,
+  offset: Offset(0, 3), // changes position of shadow
+);
+
+double iconSize = 32;
+Color cardColor = Colors.white;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,54 +24,92 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.account_balance_wallet),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // Profile or Student section (Componentizado)
-              ProfileSection(),
-
-              SizedBox(height: 20),
-
-              // Grid buttons (Componentizado)
-              GridButtons(),
-
-              SizedBox(height: 20),
-
-              // Aulas Section (Componentizado)
-              AulasSection(),
-
-              SizedBox(height: 20),
-
-              // Classes (Componentizado)
-              ClassCard(
-                  room: "Sala: 101",
-                  subject: "Prog II",
-                  time: "19:00",
-                  color: Colors.green),
-              SizedBox(height: 10),
-              ClassCard(
-                  room: "Sala: 301",
-                  subject: "Design",
-                  time: "21:00",
-                  color: Colors.red),
-            ],
+      home: Stack(
+        children: [
+          const AppBackground(
+            child: SizedBox.expand(),
           ),
-        ),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [
+                IconButton(
+                  iconSize: iconSize,
+                  onPressed: () {},
+                  icon: Stack(
+                    children: [
+                      Positioned(
+                        top: 2,
+                        left: 2,
+                        child: Icon(
+                          Icons.settings,
+                          color: Colors.black.withOpacity(0.4),
+                          size: iconSize,
+                        ),
+                      ),
+                      Icon(
+                        Icons.settings,
+                        color: cardColor,
+                        size: iconSize,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  iconSize: iconSize,
+                  onPressed: () {},
+                  icon: Stack(
+                    children: [
+                      Positioned(
+                        top: 2,
+                        left: 2,
+                        child: Icon(
+                          Icons.account_balance_wallet,
+                          color: Colors.black.withOpacity(0.4),
+                          size: iconSize,
+                        ),
+                      ),
+                      Icon(
+                        Icons.exit_to_app_rounded,
+                        color: cardColor,
+                        size: iconSize,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  ProfileSection(),
+                  const SizedBox(height: 20),
+                  GridButtons(),
+                  const SizedBox(height: 20),
+                  AulasSection(),
+                  const SizedBox(height: 20),
+                  ClassCard(
+                    room: "Sala: 101",
+                    subject: "Prog II",
+                    time: "19:00",
+                    color: Colors.green,
+                  ),
+                  const SizedBox(height: 10),
+                  ClassCard(
+                    room: "Sala: 301",
+                    subject: "Design",
+                    time: "21:00",
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -71,18 +122,12 @@ class ProfileSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.24),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
+        boxShadow: [boxShadow],
       ),
       child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.person),
           SizedBox(width: 8),
@@ -100,15 +145,38 @@ class GridButtons extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 3,
       shrinkWrap: true,
-      crossAxisSpacing: 8,
-      mainAxisSpacing: 8,
+      crossAxisSpacing: 6,
+      mainAxisSpacing: 6,
       children: [
-        GridButton(icon: Icons.campaign, label: "Eventos"),
-        GridButton(icon: Icons.receipt_long, label: "Pedidos"),
-        GridButton(icon: Icons.library_books, label: "Biblioteca"),
-        GridButton(icon: Icons.qr_code, label: "Contas"),
-        GridButton(icon: Icons.table_chart, label: "Notas"),
-        GridButton(icon: Icons.edit, label: "Inscrição"),
+        GridButton(
+          icon: Icons.campaign,
+          label: "Eventos",
+          destination: null, // Ainda não implementado
+        ),
+        GridButton(
+          icon: Icons.receipt_long,
+          label: "Pedidos",
+          destination: null, // Ainda não implementado
+        ),
+        GridButton(
+          icon: Icons.library_books,
+          label: "Biblioteca",
+        ),
+        GridButton(
+          icon: Icons.qr_code,
+          label: "Contas",
+          destination: null, // Ainda não implementado
+        ),
+        GridButton(
+          icon: Icons.table_chart,
+          label: "Notas",
+          destination: null, // Ainda não implementado
+        ),
+        GridButton(
+          icon: Icons.edit,
+          label: "Inscrição",
+          destination: null, // Ainda não implementado
+        ),
       ],
     );
   }
@@ -117,31 +185,45 @@ class GridButtons extends StatelessWidget {
 class GridButton extends StatelessWidget {
   final IconData icon;
   final String label;
+  final Widget? destination;
 
-  GridButton({required this.icon, required this.label});
+  GridButton({
+    required this.icon,
+    required this.label,
+    this.destination,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.24),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40),
-          SizedBox(height: 8),
-          Text(label),
-        ],
+    return InkWell(
+      onTap: () {
+        if (destination != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => destination!),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Esta funcionalidade ainda não está disponível.'),
+            ),
+          );
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [boxShadow],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: iconSize + 4),
+            const SizedBox(height: 8),
+            Text(label),
+          ],
+        ),
       ),
     );
   }
@@ -154,23 +236,16 @@ class AulasSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.24),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
+        boxShadow: [boxShadow],
       ),
       child: Text("Aulas"),
     );
   }
 }
 
-// Helper function to create a class card component
+// Helper function to create a class cardColor component
 class ClassCard extends StatelessWidget {
   final String room;
   final String subject;
@@ -188,16 +263,9 @@ class ClassCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 0,
-            blurRadius: 6,
-            offset: Offset(0, 2),
-          ),
-        ],
+        boxShadow: [boxShadow],
       ),
       child: Row(
         children: [
@@ -216,7 +284,7 @@ class ClassCard extends StatelessWidget {
               child: Text(
                 room,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: cardColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
