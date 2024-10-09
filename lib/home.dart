@@ -8,7 +8,7 @@ var boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
   spreadRadius: 0,
   blurRadius: 8,
-  offset: Offset(0, 3), // changes position of shadow
+  offset: Offset(0, 3), 
 );
 
 double iconSize = 32;
@@ -67,13 +67,11 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Função helper para criar a seção de perfil
 class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navega para a tela de Perfil
         Navigator.push(
           context,
           MaterialPageRoute(

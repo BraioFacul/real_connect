@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-// variáveis de estilo que podem ser usadas em diferentes partes da app
 double iconSize = 32;
 Color cardColor = Colors.white;
 BoxShadow boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
   spreadRadius: 0,
   blurRadius: 8,
-  offset: Offset(0, 3), // changes position of shadow
+  offset: Offset(0, 3),
 );
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

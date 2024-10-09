@@ -46,10 +46,9 @@ class _PerfilPageState extends State<PerfilPage> {
           const AppBackground(
             child: SizedBox.expand(),
           ),
-          // Conteúdo da tela sobre o fundo
           Scaffold(
             backgroundColor:
-                Colors.transparent, // Transparente para ver o fundo
+                Colors.transparent,
             appBar: CustomAppBar(),
             body: SingleChildScrollView(
               child: Padding(
