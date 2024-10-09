@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'components/app_background.dart';
+import 'package:real_connect/perfil.dart';
+import 'components/custom_app_bar.dart';
 
 // variaveis
 var boxShadow = BoxShadow(
@@ -31,62 +32,13 @@ class _HomePageState extends State<HomePage> {
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              actions: [
-                IconButton(
-                  iconSize: iconSize,
-                  onPressed: () {},
-                  icon: Stack(
-                    children: [
-                      Positioned(
-                        top: 2,
-                        left: 2,
-                        child: Icon(
-                          Icons.settings,
-                          color: Colors.black.withOpacity(0.4),
-                          size: iconSize,
-                        ),
-                      ),
-                      Icon(
-                        Icons.settings,
-                        color: cardColor,
-                        size: iconSize,
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  iconSize: iconSize,
-                  onPressed: () {},
-                  icon: Stack(
-                    children: [
-                      Positioned(
-                        top: 2,
-                        left: 2,
-                        child: Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.black.withOpacity(0.4),
-                          size: iconSize,
-                        ),
-                      ),
-                      Icon(
-                        Icons.exit_to_app_rounded,
-                        color: cardColor,
-                        size: iconSize,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            appBar: CustomAppBar(),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  ProfileSection(),
+                  ProfileSection(), // Seção de perfil
                   const SizedBox(height: 20),
                   GridButtons(),
                   const SizedBox(height: 20),
@@ -115,24 +67,35 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Helper function to create a profile section component
+// Função helper para criar a seção de perfil
 class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [boxShadow],
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.person),
-          SizedBox(width: 8),
-          Text("Aluno(a)"),
-        ],
+    return InkWell(
+      onTap: () {
+        // Navega para a tela de Perfil
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PerfilPage(),
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [boxShadow],
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 8),
+            Text("Aluno(a)"),
+          ],
+        ),
       ),
     );
   }
