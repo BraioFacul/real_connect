@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'components/app_background.dart';
 import 'package:real_connect/perfil.dart';
 import 'components/custom_app_bar.dart';
-
+import 'contas.dart';
 // variaveis
 var boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
   spreadRadius: 0,
   blurRadius: 8,
-  offset: Offset(0, 3), 
+  offset: Offset(0, 3),
 );
 
 double iconSize = 32;
@@ -126,7 +126,7 @@ class GridButtons extends StatelessWidget {
         GridButton(
           icon: Icons.qr_code,
           label: "Contas",
-          destination: null, // Ainda não implementado
+          destination: ContasPage(), // Redireciona para a página de contas
         ),
         GridButton(
           icon: Icons.table_chart,

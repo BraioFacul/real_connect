@@ -34,6 +34,7 @@ class Users {
   }
 
   Future<bool> login(String email, String password) async {
-    return _users.any((user) => user.email == email && user.password == password);
+    return _users
+        .any((user) => user.email == email && user.password == password);
   }
 }

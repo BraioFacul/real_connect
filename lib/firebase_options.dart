@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     projectId: 'realconnect-8eb18',
     databaseURL: 'https://realconnect-8eb18-default-rtdb.firebaseio.com',
     storageBucket: 'realconnect-8eb18.appspot.com',
-    iosClientId: '254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com',
+    iosClientId:
+        '254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.realConnect',
   );
 
@@ -78,7 +79,8 @@ class DefaultFirebaseOptions {
     projectId: 'realconnect-8eb18',
     databaseURL: 'https://realconnect-8eb18-default-rtdb.firebaseio.com',
     storageBucket: 'realconnect-8eb18.appspot.com',
-    iosClientId: '254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com',
+    iosClientId:
+        '254593401446-ips9060sudtcrtm3br1ho0a4bo8lm5g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.realConnect',
   );
 
@@ -92,5 +94,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'realconnect-8eb18.appspot.com',
     measurementId: 'G-0BSP4T4BX6',
   );
-
 }

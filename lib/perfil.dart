@@ -38,7 +38,6 @@ class _PerfilPageState extends State<PerfilPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: [
@@ -47,8 +46,7 @@ class _PerfilPageState extends State<PerfilPage> {
             child: SizedBox.expand(),
           ),
           Scaffold(
-            backgroundColor:
-                Colors.transparent,
+            backgroundColor: Colors.transparent,
             appBar: CustomAppBar(),
             body: SingleChildScrollView(
               child: Padding(

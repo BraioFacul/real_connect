@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final Users users = Users();
 
-Future<void> _login() async {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       // Verifique se o login é bem-sucedido
       bool success = await users.login(_email, _password);
@@ -35,7 +35,7 @@ Future<void> _login() async {
         );
       }
     }
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,8 @@ Future<void> _login() async {
                         ),
                       ),
                       style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
