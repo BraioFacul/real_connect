@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 top: 2,
                 left: 2,
                 child: Icon(
-                  Icons.account_balance_wallet,
+                  Icons.exit_to_app_rounded,
                   color: Colors.black.withOpacity(0.4),
                   size: iconSize,
                 ),

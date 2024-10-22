@@ -1,23 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:real_connect/models/aluno.dart';
+import 'package:real_connect/helpers/sql_helper.dart';
 import 'package:real_connect/components/app_background.dart';
 import 'components/custom_app_bar.dart';
-
-// Modelo de dados mockados para o perfil do aluno
-class Aluno {
-  final String nome;
-  final String ra;
-  final String periodo;
-  final String sala;
-  final String contato;
-
-  Aluno({
-    required this.nome,
-    required this.ra,
-    required this.periodo,
-    required this.sala,
-    required this.contato,
-  });
-}
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
@@ -27,107 +12,138 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-  // Mock de informações do aluno
-  final Aluno aluno = Aluno(
-    nome: 'João da Silva',
-    ra: '12345678',
-    periodo: 'Noturno',
-    sala: '301',
-    contato: '(11) 99999-9999',
-  );
+  Aluno? aluno; // Modifique para Aluno opcional até que seja carregado
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _contatoController = TextEditingController();
+  final TextEditingController _apelidoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarDadosAluno(); // Carregar os dados ao inicializar a página
+  }
+
+  Future<void> _carregarDadosAluno() async {
+    try {
+      var alunoData = await DatabaseHelper().getUsuarios();
+      if (alunoData.isNotEmpty) {
+        setState(() {
+          aluno = Aluno.fromMap(alunoData.first);
+          _contatoController.text = aluno!.contato;
+          _apelidoController.text = aluno!.apelido;
+        });
+      } else {
+        // Tratar caso não haja alunos no banco de dados
+        setState(() {
+          aluno =
+              null; // Ou você pode exibir uma mensagem de "Nenhum aluno encontrado"
+        });
+      }
+    } catch (e) {
+      // Se houver algum erro na leitura do banco de dados, trate-o aqui
+      print('Erro ao carregar dados do aluno: $e');
+      setState(() {
+        aluno = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: [
-          // Fundo azul que ocupa toda a tela
-          const AppBackground(
-            child: SizedBox.expand(),
-          ),
+          const AppBackground(child: SizedBox.expand()),
           Scaffold(
-            backgroundColor:
-                Colors.transparent,
+            backgroundColor: Colors.transparent,
             appBar: CustomAppBar(),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/images/images.png'),
-                    ),
-                    const SizedBox(height: 20),
-                    Card(
-                      color: Colors.white,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+            body: aluno ==
+                    null // Exibir um indicador de carregamento até que o aluno seja carregado
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Form(
+                        key: _formKey,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  aluno.nome,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            const SizedBox(height: 20),
+                            Card(
+                              color: Colors.white,
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          aluno!
+                                              .nome, // Exibe o nome do aluno carregado
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'RA: ${aluno!.ra}', // Exibe o RA do aluno carregado
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextFormField(
+                                      controller: _contatoController,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Contato'),
+                                      onSaved: (value) =>
+                                          aluno!.contato = value!,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextFormField(
+                                      controller: _apelidoController,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Apelido'),
+                                      onSaved: (value) =>
+                                          aluno!.apelido = value!,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+                                          // Atualiza os dados do aluno no banco de dados
+                                          await DatabaseHelper()
+                                              .atualizarUsuario(
+                                                  aluno!.toMap(), aluno!.id!);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Dados atualizados com sucesso!')),
+                                          );
+                                        }
+                                      },
+                                      child: const Text('Salvar'),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  'RA: ${aluno.ra}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Período: ${aluno.periodo}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                Text(
-                                  'Sala: ${aluno.sala}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Contato: ${aluno.contato}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ),
         ],
       ),
