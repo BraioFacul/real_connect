@@ -24,17 +24,28 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (Database db, int version) async {
+        // Criar tabela
         await db.execute('''
-          CREATE TABLE usuario (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            ra TEXT,
-            periodo TEXT,
-            sala TEXT,
-            contato TEXT,
-            apelido TEXT
-          )
-        ''');
+        CREATE TABLE usuario (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nome TEXT,
+          ra TEXT,
+          periodo TEXT,
+          sala TEXT,
+          contato TEXT,
+          apelido TEXT
+        )
+      ''');
+
+        // Inserir um usuário default
+        await db.insert('usuario', {
+          'nome': 'Usuário Padrão',
+          'ra': '123456',
+          'periodo': 'Noturno',
+          'sala': '101',
+          'contato': '123456789',
+          'apelido': 'Padrão'
+        });
       },
     );
   }

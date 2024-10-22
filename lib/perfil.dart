@@ -12,7 +12,7 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-  Aluno? aluno; // Modifique para Aluno opcional até que seja carregado
+  Aluno? aluno;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _contatoController = TextEditingController();
   final TextEditingController _apelidoController = TextEditingController();
@@ -20,7 +20,7 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   void initState() {
     super.initState();
-    _carregarDadosAluno(); // Carregar os dados ao inicializar a página
+    _carregarDadosAluno();
   }
 
   Future<void> _carregarDadosAluno() async {
@@ -33,14 +33,12 @@ class _PerfilPageState extends State<PerfilPage> {
           _apelidoController.text = aluno!.apelido;
         });
       } else {
-        // Tratar caso não haja alunos no banco de dados
         setState(() {
           aluno =
-              null; // Ou você pode exibir uma mensagem de "Nenhum aluno encontrado"
+              null; 
         });
       }
     } catch (e) {
-      // Se houver algum erro na leitura do banco de dados, trate-o aqui
       print('Erro ao carregar dados do aluno: $e');
       setState(() {
         aluno = null;
@@ -58,7 +56,7 @@ class _PerfilPageState extends State<PerfilPage> {
             backgroundColor: Colors.transparent,
             appBar: CustomAppBar(),
             body: aluno ==
-                    null // Exibir um indicador de carregamento até que o aluno seja carregado
+                    null 
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
                     child: Padding(
@@ -86,14 +84,14 @@ class _PerfilPageState extends State<PerfilPage> {
                                       children: [
                                         Text(
                                           aluno!
-                                              .nome, // Exibe o nome do aluno carregado
+                                              .nome,
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
-                                          'RA: ${aluno!.ra}', // Exibe o RA do aluno carregado
+                                          'RA: ${aluno!.ra}', 
                                           style: const TextStyle(
                                             fontSize: 18,
                                           ),
@@ -121,7 +119,6 @@ class _PerfilPageState extends State<PerfilPage> {
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
                                           _formKey.currentState!.save();
-                                          // Atualiza os dados do aluno no banco de dados
                                           await DatabaseHelper()
                                               .atualizarUsuario(
                                                   aluno!.toMap(), aluno!.id!);
