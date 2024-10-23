@@ -70,8 +70,8 @@ class DatabaseHelper {
         });
         await db.insert('materias', {
           'nome': 'Desing de Interiores',
-          'situacao': 'REPROVADO',
-          'media': 3.2
+          'situacao': 'APROVADO',
+          'media': 9.2
         });
         await db.insert('materias', {
           'nome': 'Arquitetura Moderna',

@@ -21,19 +21,19 @@ class _LoginPageState extends State<LoginPage> {
 Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       // Verifique se o login é bem-sucedido
-      // bool success = await users.login(_email, _password);
-      // if (success) {
+      bool success = await users.login(_email, _password);
+      if (success) {
         // Se o login for bem-sucedido, redirecione para a página inicial
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
-      // } else {
-      //   // Exiba uma mensagem de erro
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(content: Text('Invalid email or password')),
-      //   );
-      // }
+      } else {
+        // Exiba uma mensagem de erro
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid email or password')),
+        );
+      }
     }
 }
 
