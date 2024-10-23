@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'components/app_background.dart';
 import 'package:real_connect/perfil.dart';
 import 'components/custom_app_bar.dart';
+import 'package:real_connect/materia.dart';
+
 
 // variaveis
 var boxShadow = BoxShadow(
@@ -131,7 +133,7 @@ class GridButtons extends StatelessWidget {
         GridButton(
           icon: Icons.table_chart,
           label: "Notas",
-          destination: null, // Ainda não implementado
+          destination: MateriaScreen(), // Ainda não implementado
         ),
         GridButton(
           icon: Icons.edit,

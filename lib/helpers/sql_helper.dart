@@ -24,18 +24,28 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (Database db, int version) async {
-        // Criar tabela
+        // Criar tabela de usuário
         await db.execute('''
-        CREATE TABLE usuario (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nome TEXT,
-          ra TEXT,
-          periodo TEXT,
-          sala TEXT,
-          contato TEXT,
-          apelido TEXT
-        )
-      ''');
+          CREATE TABLE usuario (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            ra TEXT,
+            periodo TEXT,
+            sala TEXT,
+            contato TEXT,
+            apelido TEXT
+          )
+        ''');
+
+        // Criar tabela de matérias
+        await db.execute('''
+          CREATE TABLE materias (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            situacao TEXT,
+            media REAL
+          )
+        ''');
 
         // Inserir um usuário default
         await db.insert('usuario', {
@@ -46,17 +56,38 @@ class DatabaseHelper {
           'contato': '123456789',
           'apelido': 'Padrão'
         });
+
+        // Inserir matérias mockadas
+        await db.insert('materias', {
+          'nome': 'Programação II',
+          'situacao': 'APROVADO',
+          'media': 7.0
+        });
+        await db.insert('materias', {
+          'nome': 'Banco de Dados I',
+          'situacao': 'EXAME',
+          'media': 6.5
+        });
+        await db.insert('materias', {
+          'nome': 'Desing de Interiores',
+          'situacao': 'REPROVADO',
+          'media': 3.2
+        });
+        await db.insert('materias', {
+          'nome': 'Arquitetura Moderna',
+          'situacao': 'APROVADO',
+          'media': 7.0
+        });
       },
     );
   }
 
-  // Inserir um novo aluno no banco de dados
+
   Future<int> inserirUsuario(Map<String, dynamic> aluno) async {
     var dbClient = await db;
     return await dbClient.insert('usuario', aluno);
   }
 
-  // Buscar todos os usuários no banco de dados
   Future<List<Map<String, dynamic>>> getUsuarios() async {
     var dbClient = await db;
     return await dbClient.query('usuario');
@@ -66,5 +97,10 @@ class DatabaseHelper {
     var dbClient = await db;
     return await dbClient
         .update('usuario', aluno, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> getMaterias() async {
+    var dbClient = await db;
+    return await dbClient.query('materias');
   }
 }
