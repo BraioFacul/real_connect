@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:real_connect/models/user.dart';
 import 'package:real_connect/models/aluno.dart';
 import 'package:real_connect/helpers/sql_helper.dart';
 import 'package:real_connect/components/app_background.dart';
+import 'package:real_connect/models/loggedUser.dart';
 import 'components/custom_app_bar.dart';
 
 class PerfilPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class PerfilPage extends StatefulWidget {
 
 class _PerfilPageState extends State<PerfilPage> {
   Aluno? aluno;
+  User? user;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _contatoController = TextEditingController();
   final TextEditingController _apelidoController = TextEditingController();
@@ -20,28 +23,31 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   void initState() {
     super.initState();
-    _carregarDadosAluno();
+    _carregarDadosAluno('alunoId');
   }
 
-  Future<void> _carregarDadosAluno() async {
+  Future<void> _carregarDadosAluno(alunoId) async {
     try {
-      var alunoData = await DatabaseHelper().getUsuarios();
-      if (alunoData.isNotEmpty) {
+      var data = await DatabaseHelper().getUsuarioAluno(LoggedUser.id);
+
+      if (data != null) {
         setState(() {
-          aluno = Aluno.fromMap(alunoData.first);
-          _contatoController.text = aluno!.contato;
-          _apelidoController.text = aluno!.apelido;
+          aluno = data['aluno'];
+          user = data['user'];
+          _contatoController.text = user!.email;
+          _apelidoController.text = user!.nome;
         });
       } else {
         setState(() {
-          aluno =
-              null; 
+          aluno = null;
+          user = null;
         });
       }
     } catch (e) {
       print('Erro ao carregar dados do aluno: $e');
       setState(() {
         aluno = null;
+        user = null;
       });
     }
   }
@@ -55,8 +61,7 @@ class _PerfilPageState extends State<PerfilPage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: CustomAppBar(),
-            body: aluno ==
-                    null 
+            body: aluno == null
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
                     child: Padding(
@@ -83,15 +88,14 @@ class _PerfilPageState extends State<PerfilPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          aluno!
-                                              .nome,
+                                          user!.nome,
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
-                                          'RA: ${aluno!.ra}', 
+                                          'RA: ${aluno!.ra}',
                                           style: const TextStyle(
                                             fontSize: 18,
                                           ),
@@ -100,19 +104,18 @@ class _PerfilPageState extends State<PerfilPage> {
                                     ),
                                     const SizedBox(height: 10),
                                     TextFormField(
-                                      controller: _contatoController,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Contato'),
-                                      onSaved: (value) =>
-                                          aluno!.contato = value!,
-                                    ),
+                                        controller: _contatoController,
+                                        decoration: const InputDecoration(
+                                            labelText: 'Contato'),
+                                        onSaved: (value) =>
+                                            user!.email = value!),
                                     const SizedBox(height: 10),
                                     TextFormField(
                                       controller: _apelidoController,
                                       decoration: const InputDecoration(
                                           labelText: 'Apelido'),
                                       onSaved: (value) =>
-                                          aluno!.apelido = value!,
+                                          user!.nome = value!,
                                     ),
                                     const SizedBox(height: 10),
                                     ElevatedButton(
