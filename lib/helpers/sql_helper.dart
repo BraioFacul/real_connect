@@ -275,8 +275,17 @@ class DatabaseHelper {
       whereArgs: [tipo],
     );
     if (result.isNotEmpty) {
-      return result.first; 
+      return result.first;
     }
     return null;
+  }
+
+  Future<int> deletarImagemPorTipo(String tipo) async {
+    var dbClient = await db;
+    return await dbClient.delete(
+      'inscricao_image',
+      where: 'tipo = ?',
+      whereArgs: [tipo],
+    );
   }
 }

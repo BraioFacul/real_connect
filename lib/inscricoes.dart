@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'components/app_background.dart';
 import 'components/custom_app_bar.dart';
-import 'package:real_connect/helpers/sql_helper.dart'; 
+import 'package:real_connect/helpers/sql_helper.dart';
 
 var boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
@@ -25,8 +25,10 @@ class InscricoesPage extends StatefulWidget {
 class _InscricoesPageState extends State<InscricoesPage> {
   String? selectedFileName;
   File? selectedFile;
-  late String selectedTipo; 
-  final DatabaseHelper _dbHelper = DatabaseHelper(); 
+  late String
+      selectedTipo; 
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper(); 
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,8 @@ class _InscricoesPageState extends State<InscricoesPage> {
                         GridButton(
                           icon: Icons.school,
                           label: "Palestras",
-                          onTap: () => _openFilePickerModal(context, 'palestras'),
+                          onTap: () =>
+                              _openFilePickerModal(context, 'palestras'),
                         ),
                         const SizedBox(height: 16),
                         GridButton(
@@ -74,13 +77,15 @@ class _InscricoesPageState extends State<InscricoesPage> {
                         GridButton(
                           icon: Icons.extension,
                           label: "Projeto Extensão",
-                          onTap: () => _openFilePickerModal(context, 'projeto_extensao'),
+                          onTap: () =>
+                              _openFilePickerModal(context, 'projeto_extensao'),
                         ),
                         const SizedBox(height: 16),
                         GridButton(
                           icon: Icons.monitor,
                           label: "Monitoria",
-                          onTap: () => _openFilePickerModal(context, 'monitoria'),
+                          onTap: () =>
+                              _openFilePickerModal(context, 'monitoria'),
                         ),
                       ],
                     ),
@@ -96,18 +101,20 @@ class _InscricoesPageState extends State<InscricoesPage> {
 
   Future<void> _openFilePickerModal(BuildContext context, String tipo) async {
     setState(() {
-      selectedTipo = tipo; 
+      selectedTipo = tipo;
     });
 
-    Map<String, dynamic>? imagemExistente = await _dbHelper.buscarImagemPorTipo(tipo);
+    Map<String, dynamic>? imagemExistente =
+        await _dbHelper.buscarImagemPorTipo(tipo);
 
     if (imagemExistente != null) {
       setState(() {
-        selectedFile = File(imagemExistente['imagePath']); 
+        selectedFile = File(
+            imagemExistente['imagePath']); 
       });
     } else {
       setState(() {
-        selectedFile = null;
+        selectedFile = null; 
       });
     }
 
@@ -137,7 +144,8 @@ class _InscricoesPageState extends State<InscricoesPage> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () async {
-                        FilePickerResult? result = await FilePicker.platform.pickFiles(
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles(
                           type: FileType.image,
                         );
                         if (result != null) {
@@ -156,18 +164,23 @@ class _InscricoesPageState extends State<InscricoesPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                        if (selectedFile != null)
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            onPressed: () async {
+                              await _dbHelper
+                                  .deletarImagemPorTipo(selectedTipo);
+                              setState(() {
+                                selectedFile = null; 
+                              });
+                            },
+                            child: const Text(
+                              "Deletar",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            "Sair",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
@@ -179,7 +192,7 @@ class _InscricoesPageState extends State<InscricoesPage> {
                                 'tipo': selectedTipo,
                               });
 
-                              Navigator.pop(context); // Fecha o modal
+                              Navigator.pop(context); 
                             }
                           },
                           child: const Text(
