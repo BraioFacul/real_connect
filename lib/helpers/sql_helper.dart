@@ -26,12 +26,11 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (Database db, int version) async {
-  print("Criando tabelas...");
-
+        print("Criando tabelas...");
 
         await db.execute('DROP TABLE IF EXISTS user');
         await db.execute('DROP TABLE IF EXISTS aluno');
-  
+
         await db.execute('''
           CREATE TABLE user (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +46,7 @@ class DatabaseHelper {
           )
         ''');
 
-          await db.execute('''
+        await db.execute('''
           CREATE TABLE materias (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT,
@@ -64,6 +63,14 @@ class DatabaseHelper {
             curso TEXT NOT NULL,
             user_id INTEGER,
             FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE inscricao_image (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            imagePath TEXT NOT NULL,
+            tipo TEXT NOT NULL
           )
         ''');
 
@@ -145,7 +152,7 @@ class DatabaseHelper {
           'ra': '345678',
           'periodo': 'Noturno',
           'curso': 'Ciência da Computação',
-          'user_id': 3, 
+          'user_id': 3,
         });
 
         await db.insert('aluno', {
@@ -242,7 +249,7 @@ class DatabaseHelper {
     return await dbClient.query('materias');
   }
 
-  Future <List<Map<String, dynamic>?>> login(String ra, String senha) async {
+  Future<List<Map<String, dynamic>?>> login(String ra, String senha) async {
     var dbClient = await db;
 
     final result = await dbClient.query(
@@ -252,7 +259,24 @@ class DatabaseHelper {
       whereArgs: [ra, senha],
     );
 
+    return result;
+  }
 
-    return result ;
+  Future<int> inserirImagem(Map<String, dynamic> imagem) async {
+    var dbClient = await db;
+    return await dbClient.insert('inscricao_image', imagem);
+  }
+
+  Future<Map<String, dynamic>?> buscarImagemPorTipo(String tipo) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient.query(
+      'inscricao_image',
+      where: 'tipo = ?',
+      whereArgs: [tipo],
+    );
+    if (result.isNotEmpty) {
+      return result.first; 
+    }
+    return null;
   }
 }

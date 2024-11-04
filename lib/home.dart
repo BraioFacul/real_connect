@@ -4,6 +4,7 @@ import 'package:real_connect/perfil.dart';
 import 'components/custom_app_bar.dart';
 import 'contas.dart';
 import 'package:real_connect/materia.dart';
+import 'package:real_connect/inscricoes.dart';
 
 
 // variaveis
@@ -139,7 +140,7 @@ class GridButtons extends StatelessWidget {
         GridButton(
           icon: Icons.edit,
           label: "Inscrição",
-          destination: null, // Ainda não implementado
+          destination: InscricoesPage(),
         ),
       ],
     );
