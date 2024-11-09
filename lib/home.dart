@@ -5,6 +5,7 @@ import 'components/custom_app_bar.dart';
 import 'contas.dart';
 import 'package:real_connect/materia.dart';
 import 'package:real_connect/inscricoes.dart';
+import 'package:real_connect/eventos.dart';
 
 
 // variaveis
@@ -116,7 +117,7 @@ class GridButtons extends StatelessWidget {
         GridButton(
           icon: Icons.campaign,
           label: "Eventos",
-          destination: null, // Ainda não implementado
+          destination: EventosPage(), // Ainda não implementado
         ),
         GridButton(
           icon: Icons.receipt_long,
