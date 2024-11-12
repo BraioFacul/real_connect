@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:real_connect/login.dart';
 
 double iconSize = 32;
 Color cardColor = Colors.white;
@@ -40,7 +41,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         IconButton(
           iconSize: iconSize,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+           },
           icon: Stack(
             children: [
               Positioned(
