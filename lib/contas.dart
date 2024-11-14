@@ -26,6 +26,7 @@ class _ContasPageState extends State<ContasPage> {
     final double cardWidth = screenWidth - 76;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
           const AppBackground(
@@ -135,7 +136,8 @@ class BoletoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        double valorTotal = 500.00; // Passando o valor de 500.00 para a página de detalhes do boleto
+        double valorTotal =
+            500.00; // Passando o valor de 500.00 para a página de detalhes do boleto
 
         if (isPaid) {
           Navigator.push(

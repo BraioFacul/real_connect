@@ -44,6 +44,7 @@ class _EventosPageState extends State<EventosPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: CustomAppBar(),
         backgroundColor: Colors.transparent,

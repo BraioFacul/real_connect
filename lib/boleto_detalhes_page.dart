@@ -12,6 +12,7 @@ class BoletoDetalhesPage extends StatelessWidget {
     final double cardWidth = screenWidth - 76;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
           const AppBackground(
@@ -44,11 +45,16 @@ class BoletoDetalhesPage extends StatelessWidget {
                   SizedBox(height: 50),
 
                   // Card para valor total
-                  _buildInfoCard('Total', 'R\$ ${valorTotal.toStringAsFixed(2)}', cardWidth, Colors.black),
+                  _buildInfoCard(
+                      'Total',
+                      'R\$ ${valorTotal.toStringAsFixed(2)}',
+                      cardWidth,
+                      Colors.black),
 
                   // Card para Descontos
                   SizedBox(height: 16),
-                  _buildInfoCard('Descontos', 'R\$ 250,00', cardWidth, Colors.red),
+                  _buildInfoCard(
+                      'Descontos', 'R\$ 250,00', cardWidth, Colors.red),
 
                   // Card para Tipo
                   SizedBox(height: 16),
@@ -108,7 +114,8 @@ class BoletoDetalhesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCard(String title, String value, double width, Color textColor) {
+  Widget _buildInfoCard(
+      String title, String value, double width, Color textColor) {
     return Container(
       width: width,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -128,19 +135,21 @@ class BoletoDetalhesPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoCardWithIcon(
-      String title, String value, IconData icon, Color iconColor, double width) {
+  Widget _buildInfoCardWithIcon(String title, String value, IconData icon,
+      Color iconColor, double width) {
     return Container(
       width: width,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),

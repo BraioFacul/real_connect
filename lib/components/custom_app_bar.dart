@@ -19,14 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: appBarBackgroundColor, // Azul escuro
       elevation: 4,
-      automaticallyImplyLeading: true,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new_rounded
-        , color: Colors.white),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
+      automaticallyImplyLeading: false, // Remover o botão de voltar
       actions: [
         IconButton(
           iconSize: iconSize,

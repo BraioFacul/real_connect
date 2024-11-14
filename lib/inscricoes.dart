@@ -31,6 +31,7 @@ class _InscricoesPageState extends State<InscricoesPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
           const AppBackground(child: SizedBox.expand()),
@@ -55,7 +56,8 @@ class _InscricoesPageState extends State<InscricoesPage> {
                         GridButton(
                           icon: Icons.science_outlined,
                           label: "Iniciação Científica",
-                          onTap: () => _openFilePickerModal(context, 'iniciacao_cientifica'),
+                          onTap: () => _openFilePickerModal(
+                              context, 'iniciacao_cientifica'),
                         ),
                         const SizedBox(height: 16),
                         GridButton(
