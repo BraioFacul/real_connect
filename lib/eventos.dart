@@ -18,7 +18,7 @@ class _EventosPageState extends State<EventosPage> {
 
   Future<void> getEventos() async {
     try {
-      final response = await dio.get('http://192.168.1.109:8080/api/events');
+      final response = await dio.get('http://172.32.90.152:9090/api/events');
       setState(() {
         if (response.data is List) {
           _eventos = response.data;
