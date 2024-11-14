@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'components/app_background.dart'; // Importando o AppBackground
 import 'home.dart'; // Importando a HomePage para navegar de volta
 import 'pagamento.dart'; // Importando a página de pagamento
+import 'boleto_detalhes_page.dart'; // Importando a página de detalhes do boleto
 
 // Variáveis
 var boxShadow = BoxShadow(
@@ -22,50 +23,45 @@ class _ContasPageState extends State<ContasPage> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double cardWidth = screenWidth - 76; // Largura da tela menos 38px de cada lado
+    final double cardWidth = screenWidth - 76;
 
     return MaterialApp(
       home: Stack(
         children: [
-          const AppBackground( // Usando AppBackground como fundo
-            child: SizedBox.expand(), // Para ocupar todo o espaço disponível
+          const AppBackground(
+            child: SizedBox.expand(),
           ),
           Scaffold(
-            backgroundColor: Colors.transparent, // Fundo do Scaffold transparente
+            backgroundColor: Colors.transparent,
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 38.0),
               child: Column(
                 children: [
-                  SizedBox(height: 29), // Espaçamento no topo da página
-                  // Botão de Voltar
+                  SizedBox(height: 29),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context); // Retorna à página anterior
+                      Navigator.pop(context);
                     },
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.black, // Cor da seta
-                        ), // Seta sem mudança de cor
-                        SizedBox(width: 8), // Espaçamento entre a seta e o texto
+                        Icon(Icons.arrow_back, color: Colors.black),
+                        SizedBox(width: 8),
                         Text(
                           'Voltar',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black, // Cor do texto
+                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 50), // Espaçamento entre o botão e o card de Outubro 2024
-                  // Card de Outubro 2024
+                  SizedBox(height: 50),
                   Container(
                     height: 52,
                     decoration: BoxDecoration(
-                      color: cardColor, // Usando a cor do card
+                      color: cardColor,
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
@@ -86,22 +82,14 @@ class _ContasPageState extends State<ContasPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50), // Garantindo 50px entre o título e os boletos
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PagamentoPage()), // Navega para a página de pagamento
-                      );
-                    },
-                    child: BoletoCard(
-                      width: cardWidth,
-                      status: 'Não Pago',
-                      date: '05/10/2024',
-                      icon: Icons.pending_actions,
-                      iconColor: Colors.orange,
-                      bgColor: Colors.orange[100],
-                    ),
+                  SizedBox(height: 50),
+                  BoletoCard(
+                    width: cardWidth,
+                    status: 'Não Pago',
+                    date: '05/10/2024',
+                    icon: Icons.pending_actions,
+                    iconColor: Colors.orange,
+                    bgColor: Colors.orange[100],
                   ),
                   SizedBox(height: 16),
                   BoletoCard(
@@ -113,26 +101,7 @@ class _ContasPageState extends State<ContasPage> {
                     bgColor: Colors.green[100],
                     isPaid: true,
                   ),
-                  SizedBox(height: 16),
-                  BoletoCard(
-                    width: cardWidth,
-                    status: 'Pago',
-                    date: '05/08/2024',
-                    icon: Icons.check_circle,
-                    iconColor: Colors.green,
-                    bgColor: Colors.green[100],
-                    isPaid: true,
-                  ),
-                  SizedBox(height: 16),
-                  BoletoCard(
-                    width: cardWidth,
-                    status: 'Pago',
-                    date: '05/07/2024',
-                    icon: Icons.check_circle,
-                    iconColor: Colors.green,
-                    bgColor: Colors.green[100],
-                    isPaid: true,
-                  ),
+                  // Adicione mais cards se necessário
                 ],
               ),
             ),
@@ -164,67 +133,84 @@ class BoletoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 150, // Altura dos cards
-      decoration: BoxDecoration(
-        color: cardColor, // Usando a cor do card
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          boxShadow,
-        ],
-      ),
-      child: Row(
-        children: [
-          // Seção da data à esquerda
-          Expanded(
-            flex: 3, // 3/4 da largura do card para a data
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  date,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        double valorTotal = 500.00; // Passando o valor de 500.00 para a página de detalhes do boleto
+
+        if (isPaid) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BoletoDetalhesPage(valorTotal: valorTotal),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PagamentoPage()),
+          );
+        }
+      },
+      child: Container(
+        width: width,
+        height: 150,
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            boxShadow,
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    date,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          // Seção de status à direita (1/4 da largura do card)
-          Expanded(
-            flex: 1, // 1/4 do card para o status
-            child: Container(
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+            Expanded(
+              flex: 1,
+              child: Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon, color: iconColor, size: 32),
-                    SizedBox(height: 4),
-                    Text(
-                      status,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: iconColor,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(icon, color: iconColor, size: 32),
+                      SizedBox(height: 4),
+                      Text(
+                        status,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: iconColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
