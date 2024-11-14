@@ -3,6 +3,7 @@ import 'components/app_background.dart'; // Importando o AppBackground
 import 'home.dart'; // Importando a HomePage para navegar de volta
 import 'pagamento.dart'; // Importando a página de pagamento
 import 'boleto_detalhes_page.dart'; // Importando a página de detalhes do boleto
+import 'components/custom_app_bar.dart'; // Certifique-se de importar seu CustomAppBar
 
 // Variáveis
 var boxShadow = BoxShadow(
@@ -23,41 +24,20 @@ class _ContasPageState extends State<ContasPage> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double cardWidth = screenWidth - 76;
+    final double cardWidth = screenWidth;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
-          const AppBackground(
-            child: SizedBox.expand(),
-          ),
+          const AppBackground(child: SizedBox.expand()),
           Scaffold(
             backgroundColor: Colors.transparent,
+            appBar: CustomAppBar(), // Usando o CustomAppBar aqui
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 38.0),
               child: Column(
                 children: [
-                  SizedBox(height: 29),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.black),
-                        SizedBox(width: 8),
-                        Text(
-                          'Voltar',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(height: 50),
                   Container(
                     height: 52,
@@ -155,10 +135,10 @@ class BoletoCard extends StatelessWidget {
       },
       child: Container(
         width: width,
-        height: 150,
+        height: 70,
         decoration: BoxDecoration(
           color: cardColor,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             boxShadow,
           ],
@@ -187,9 +167,8 @@ class BoletoCard extends StatelessWidget {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   color: bgColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
                   ),
                 ),
                 child: Center(

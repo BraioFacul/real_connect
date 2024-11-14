@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'components/app_background.dart';
+import 'components/custom_app_bar.dart'; // Importando o CustomAppBar
 
 class BoletoDetalhesPage extends StatelessWidget {
   final double valorTotal;
@@ -20,28 +21,11 @@ class BoletoDetalhesPage extends StatelessWidget {
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
+            appBar: CustomAppBar(), // Adicionando o CustomAppBar
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 38.0),
               child: Column(
                 children: [
-                  SizedBox(height: 29),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.black),
-                        SizedBox(width: 8),
-                        Text(
-                          'Voltar',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(height: 50),
 
                   // Card para valor total
