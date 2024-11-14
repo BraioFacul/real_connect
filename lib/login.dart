@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:real_connect/Home.dart';
-import 'package:flutter/gestures.dart';
 import 'package:real_connect/helpers/sql_helper.dart';
-import 'package:real_connect/models/aluno.dart';
 import 'package:real_connect/models/loggedUser.dart';
 import 'package:real_connect/models/user.dart';
 
@@ -15,16 +13,20 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+
+  // Controladores para os campos de texto
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   bool _passwordVisible = true;
-  Aluno? aluno;
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      var result = await DatabaseHelper().login(_email, _password);
-      if (result.isNotEmpty) {
+      String email = _emailController.text;
+      String password = _passwordController.text;
 
+      var result = await DatabaseHelper().login(email, password);
+      if (result.isNotEmpty) {
         LoggedUser.id = User.fromMap(result.first!).id;
         print("Usuário Logado: ${LoggedUser.id}");
 
@@ -34,145 +36,184 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid Email or password')),
+          const SnackBar(content: Text('Invalid Email or password')),
         );
       }
     }
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    bool readOnly = false,
+    IconData? icon,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    VoidCallback? onSuffixIconPressed,
+  }) {
+    return TextFormField(
+      controller: controller,
+      readOnly: readOnly,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: icon != null ? Icon(icon, color: Colors.blue[800]) : null,
+        suffixIcon: onSuffixIconPressed != null
+            ? IconButton(
+                icon: Icon(
+                  obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.blue[800],
+                ),
+                onPressed: onSuffixIconPressed,
+              )
+            : null,
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor, preencha este campo';
+        }
+        return null;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double windowHeight = MediaQuery.of(context).size.height;
-    double windowWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.blue,
-        child: Column(children: [
-          SizedBox(height: windowHeight * 0.03),
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
           Container(
-            height: windowHeight * 0.15,
-            child: Image.asset("assets/images/centro-universistario.png"),
+            color: Colors.white,
+            height: double.infinity,
+            width: double.infinity,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: windowHeight * 0.05),
+
+          ClipPath(
+            clipper: WaveClipper(),
             child: Container(
-              height: windowHeight * 0.7,
-              width: windowWidth * 0.9,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: windowHeight * 0.06),
-                    Text(
-                      'Entre na sua conta',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'AnekMalayalam',
-                        fontSize: 24,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: windowHeight * 0.04),
-                    SizedBox(
-                      width: windowWidth * 0.8,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.email),
-                          fillColor: const Color.fromARGB(255, 218, 218, 218),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          labelText: 'Email',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Coloque o seu Email';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          _email = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(height: windowHeight * 0.04),
-                    SizedBox(
-                      width: windowWidth * 0.8,
-                      child: TextFormField(
-                        obscureText: _passwordVisible,
-                        decoration: InputDecoration(
-                          fillColor: const Color.fromARGB(255, 218, 218, 218),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            icon: Icon(_passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                          ),
-                          labelText: 'Senha',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Coloque sua senha';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          _password = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(height: windowHeight * 0.03),
-                    Text('Esqueceu sua senha?'),
-                    SizedBox(height: windowHeight * 0.03),
-                    ElevatedButton(
-                      onPressed: _login,
-                      child: Container(
-                        width: 150,
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white, fontSize: 24),
-                          ),
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      ),
-                    ),
-                  ],
+              height: windowHeight * 0.5,
+              color: Colors.blue,
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 150),
+                child: SizedBox(
+                  height: windowHeight * 0.15,
+                  child: Image.asset(
+                    "assets/images/centro-universistario-branca.png",
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
           ),
-        ]),
+
+          // Card que aparece centralizado e é rolável com o teclado
+          SingleChildScrollView(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Center(
+              child: Container(
+                height: windowHeight * 0.55,
+                margin: EdgeInsets.only(top: windowHeight * 0.35),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildTextField(
+                        controller: _emailController,
+                        label: 'Email',
+                        icon: Icons.email,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _passwordController,
+                        label: 'Senha',
+                        icon: Icons.lock,
+                        obscureText: _passwordVisible,
+                        onSuffixIconPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Esqueceu sua senha?',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 5,
+                          ),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-    ));
+    );
   }
+}
+
+class WaveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height * 0.75);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.85,
+        size.width * 0.5, size.height * 0.75);
+    path.quadraticBezierTo(
+        size.width * 0.75, size.height * 0.65, size.width, size.height * 0.75);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
