@@ -25,19 +25,15 @@ class InscricoesPage extends StatefulWidget {
 class _InscricoesPageState extends State<InscricoesPage> {
   String? selectedFileName;
   File? selectedFile;
-  late String
-      selectedTipo; 
-  final DatabaseHelper _dbHelper =
-      DatabaseHelper(); 
+  late String selectedTipo;
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Stack(
         children: [
-          const AppBackground(
-            child: SizedBox.expand(),
-          ),
+          const AppBackground(child: SizedBox.expand()),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: CustomAppBar(),
@@ -59,7 +55,7 @@ class _InscricoesPageState extends State<InscricoesPage> {
                         GridButton(
                           icon: Icons.science_outlined,
                           label: "Iniciação Científica",
-                          onTap: () => _openFilePickerModal(context, 'sapien'),
+                          onTap: () => _openFilePickerModal(context, 'iniciacao_cientifica'),
                         ),
                         const SizedBox(height: 16),
                         GridButton(
@@ -109,12 +105,11 @@ class _InscricoesPageState extends State<InscricoesPage> {
 
     if (imagemExistente != null) {
       setState(() {
-        selectedFile = File(
-            imagemExistente['imagePath']); 
+        selectedFile = File(imagemExistente['imagePath']);
       });
     } else {
       setState(() {
-        selectedFile = null; 
+        selectedFile = null;
       });
     }
 
@@ -124,82 +119,125 @@ class _InscricoesPageState extends State<InscricoesPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              contentPadding: const EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
-              content: SizedBox(
-                width: double.maxFinite,
+              contentPadding: const EdgeInsets.all(20),
+              content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // Exibir imagem selecionada ou mensagem
                     if (selectedFile != null)
-                      Image.file(
-                        selectedFile!,
-                        height: 150,
-                        fit: BoxFit.cover,
-                      )
-                    else
-                      const Text("Nenhuma imagem selecionada"),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () async {
-                        FilePickerResult? result =
-                            await FilePicker.platform.pickFiles(
-                          type: FileType.image,
-                        );
-                        if (result != null) {
-                          setState(() {
-                            selectedFile = File(result.files.single.path!);
-                            selectedFileName = result.files.single.name;
-                          });
-                        }
-                      },
-                      child: const Text(
-                        "Selecionar Arquivo",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (selectedFile != null)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                            onPressed: () async {
-                              await _dbHelper
-                                  .deletarImagemPorTipo(selectedTipo);
-                              setState(() {
-                                selectedFile = null; 
-                              });
-                            },
-                            child: const Text(
-                              "Deletar",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
-                          onPressed: () async {
-                            if (selectedFile != null) {
-                              await _dbHelper.inserirImagem({
-                                'imagePath': selectedFile!.path,
-                                'tipo': selectedTipo,
-                              });
-
-                              Navigator.pop(context); 
-                            }
-                          },
-                          child: const Text(
-                            "Salvar",
-                            style: TextStyle(color: Colors.black),
+                      Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            image: FileImage(selectedFile!),
+                            fit: BoxFit.cover,
                           ),
                         ),
+                      )
+                    else
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          "Nenhuma imagem selecionada",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+
+                    // Botões de ação: Selecionar, Excluir, Salvar
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (selectedFile == null)
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey[100],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              onPressed: () async {
+                                FilePickerResult? result =
+                                    await FilePicker.platform.pickFiles(
+                                  type: FileType.image,
+                                );
+                                if (result != null) {
+                                  setState(() {
+                                    selectedFile =
+                                        File(result.files.single.path!);
+                                    selectedFileName = result.files.single.name;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.upload_file,
+                                  color: Colors.black),
+                              label: const Text(
+                                "Selecionar Arquivo",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        if (selectedFile != null) ...[
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              onPressed: () async {
+                                await _dbHelper
+                                    .deletarImagemPorTipo(selectedTipo);
+                                setState(() {
+                                  selectedFile = null;
+                                });
+                                Navigator.pop(context);
+                              },
+                              icon:
+                                  const Icon(Icons.delete, color: Colors.white),
+                              label: const Text("Excluir",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              onPressed: () async {
+                                if (selectedFile != null) {
+                                  await _dbHelper.inserirImagem({
+                                    'imagePath': selectedFile!.path,
+                                    'tipo': selectedTipo,
+                                  });
+                                  Navigator.pop(context);
+                                }
+                              },
+                              icon: const Icon(Icons.save, color: Colors.white),
+                              label: const Text("Salvar",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ],
@@ -218,7 +256,7 @@ class GridButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  GridButton({
+  const GridButton({
     required this.icon,
     required this.label,
     required this.onTap,
@@ -245,14 +283,12 @@ class GridButton extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.left,
               ),
             ),
-            const SizedBox(width: 16), 
+            const SizedBox(width: 16),
           ],
         ),
       ),
