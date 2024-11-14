@@ -7,7 +7,6 @@ import 'package:real_connect/materia.dart';
 import 'package:real_connect/inscricoes.dart';
 import 'package:real_connect/eventos.dart';
 
-
 // variaveis
 var boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
@@ -51,16 +50,16 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 20),
                   ClassCard(
                     room: "Sala: 101",
-                    subject: "Prog II",
+                    subject: "Programação II",
                     time: "19:00",
-                    color: Colors.green,
+                    color: Color(0xFFB4E197),
                   ),
                   const SizedBox(height: 10),
                   ClassCard(
                     room: "Sala: 301",
-                    subject: "Design",
+                    subject: "Banco de Dados I",
                     time: "21:00",
-                    color: Colors.red,
+                    color: Color(0xFFFFA8A8),
                   ),
                 ],
               ),
@@ -211,74 +210,82 @@ class AulasSection extends StatelessWidget {
   }
 }
 
-// Helper function to create a class cardColor component
 class ClassCard extends StatelessWidget {
   final String room;
   final String subject;
   final String time;
   final Color color;
 
-  ClassCard(
-      {required this.room,
-      required this.subject,
-      required this.time,
-      required this.color});
+  ClassCard({
+    required this.room,
+    required this.subject,
+    required this.time,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [boxShadow],
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          // Left colored section
+          // Seção colorida à esquerda com sombra preta aplicada
           Container(
-            width: 80,
-            height: 80,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black
+                      .withOpacity(0.15), // Sombra preta mais discreta
+                  blurRadius: 4, // Menor desfoque
+                  offset: Offset(
+                      3, 3), // Sombra mais sutil para a direita e para baixo
+                ),
+              ],
             ),
             child: Center(
               child: Text(
                 room,
-                style: TextStyle(
-                  color: cardColor,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
 
-          // Right content section
+          // Seção com o conteúdo à direita
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Título da matéria
                   Text(
                     subject,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                     ),
                   ),
+                  // Horário
                   Text(
                     time,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 18,
                     ),
                   ),
                 ],
