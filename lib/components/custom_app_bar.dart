@@ -3,19 +3,30 @@ import 'package:real_connect/login.dart';
 
 double iconSize = 32;
 Color cardColor = Colors.white;
+Color appBarBackgroundColor = Colors.blue[900]!;
 BoxShadow boxShadow = BoxShadow(
   color: Colors.black.withOpacity(0.24),
   spreadRadius: 0,
   blurRadius: 8,
-  offset: Offset(0, 3),
+  offset: const Offset(0, 3),
 );
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+      backgroundColor: appBarBackgroundColor, // Azul escuro
+      elevation: 4,
+      automaticallyImplyLeading: true,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new_rounded
+        , color: Colors.white),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       actions: [
         IconButton(
           iconSize: iconSize,
@@ -45,7 +56,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => LoginPage()),
             );
-           },
+          },
           icon: Stack(
             children: [
               Positioned(
@@ -70,5 +81,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

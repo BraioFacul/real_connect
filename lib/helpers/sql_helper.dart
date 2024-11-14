@@ -241,7 +241,38 @@ class DatabaseHelper {
   Future<int> atualizarUsuario(Map<String, dynamic> aluno, int id) async {
     var dbClient = await db;
     return await dbClient
-        .update('usuario', aluno, where: 'id = ?', whereArgs: [id]);
+        .update('aluno', aluno, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> atualizarAlunoEUsuario(
+    Map<String, dynamic> aluno,
+    Map<String, dynamic> user,
+    int alunoId,
+    int userId,
+  ) async {
+    final dbClient = await db;
+
+    int alunoUpdateCount = await dbClient.update(
+      'aluno',
+      aluno,
+      where: 'id = ?',
+      whereArgs: [alunoId],
+    );
+
+    print('Linhas afetadas (Aluno): $alunoUpdateCount');
+
+    int userUpdateCount = await dbClient.update(
+      'user',
+      user,
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+
+    print('Linhas afetadas (User): $userUpdateCount');
+
+    if (alunoUpdateCount == 0 || userUpdateCount == 0) {
+      throw Exception('Falha ao atualizar dados');
+    }
   }
 
   Future<List<Map<String, dynamic>>> getMaterias() async {
